@@ -3,6 +3,8 @@ package com.bigmakk.question_service.service;
 
 import com.bigmakk.question_service.dao.QuestionDao;
 import com.bigmakk.question_service.model.Question;
+import com.bigmakk.question_service.model.QuestionWrapper;
+import com.bigmakk.question_service.model.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,5 +53,35 @@ public class QuestionService {
         }
 
         return new ResponseEntity<>("failure",HttpStatus.BAD_REQUEST);
+    }
+
+    public ResponseEntity<List<Integer>> getQuestionsForQuiz(String category, Integer numQuestions) {
+        List<Integer> questions=questionDao.findRandomQuestionsByCategory(category,numQuestions);
+        return new ResponseEntity<>(questions,HttpStatus.OK);
+    }
+
+    public ResponseEntity<List<QuestionWrapper>> getQuestionsFromID(List<Integer> questionIds) {
+
+        List<QuestionWrapper> questionWrappers=new ArrayList<>();
+        for(int i:questionIds){
+            Question question=questionDao.findById(i).get();
+            QuestionWrapper questionWrapper=new QuestionWrapper(question.getId(),question.getDescription(), question.getOption1(), question.getOption2(), question.getOption3(), question.getOption4());
+            questionWrappers.add(questionWrapper);
+        }
+        return new ResponseEntity<>(questionWrappers,HttpStatus.OK);
+    }
+
+    public ResponseEntity<Integer> getScore(List<Response> responses) {
+        int score=0;
+        for(Response response:responses){
+            Question question=questionDao.findById(response.getId()).get();
+            if(response.getAns().equals(question.getCorrectAnswer()))
+                score++;
+
+
+
+        }
+
+        return new ResponseEntity<>(score,HttpStatus.OK);
     }
 }

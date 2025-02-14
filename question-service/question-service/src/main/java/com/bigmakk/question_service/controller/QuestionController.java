@@ -3,6 +3,8 @@ package com.bigmakk.question_service.controller;
 
 
 import com.bigmakk.question_service.model.Question;
+import com.bigmakk.question_service.model.QuestionWrapper;
+import com.bigmakk.question_service.model.Response;
 import com.bigmakk.question_service.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +37,19 @@ public class QuestionController {
         return questionService.addQuestion(question);
     }
 
+    @GetMapping("generate")
+    public ResponseEntity<List<Integer>> getQuestionForQuiz(@RequestParam String category,@RequestParam Integer numQuestions){
+        return  questionService.getQuestionsForQuiz(category,numQuestions);
+    }
 
+    @PostMapping("getQuestions")
+    public ResponseEntity<List<QuestionWrapper>> getQuestionsFromId(@RequestBody List<Integer> questionIds){
+        return questionService.getQuestionsFromID(questionIds);
+    }
+
+
+    @PostMapping("getScore")
+    public ResponseEntity<Integer> getScore(@RequestBody List<Response> responses){
+        return questionService.getScore(responses);
+    }
 }
