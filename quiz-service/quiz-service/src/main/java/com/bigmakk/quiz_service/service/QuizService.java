@@ -1,6 +1,7 @@
 package com.bigmakk.quiz_service.service;
 
 
+import com.bigmakk.quiz_service.client.QuestionClient;
 import com.bigmakk.quiz_service.dao.QuizDao;
 import com.bigmakk.quiz_service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +20,18 @@ public class QuizService {
     @Autowired
     QuizDao quizDao;
 
+    @Autowired
+    QuestionClient questionClient;
 //    @Autowired
 //    QuestionDao questionDao;
     public ResponseEntity<String> createQuiz(String category, int num, String title) {
         try{
             //Rest Template
-            List<Integer> questions=//call generate url from question service -RestTemplate
-
-
-//            List<Question> questions=questionDao.findRandomQuestionsByCategory(category,num);
-//            Quiz quiz=new Quiz();
-//            quiz.setTitle(title);
-//            quiz.setQuestions(questions);
-//            quizDao.save(quiz);
+            List<Integer> questions=questionClient.getQuestionForQuiz(category,num).getBody();
+            Quiz quiz=new Quiz();
+            quiz.setTitle(title);
+            quiz.setQuestions(questions);
+            quizDao.save(quiz);
             return new ResponseEntity<>("success",HttpStatus.CREATED);
 
         } catch (Exception e) {

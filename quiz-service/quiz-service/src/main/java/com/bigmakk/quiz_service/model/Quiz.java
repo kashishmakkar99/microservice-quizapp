@@ -13,6 +13,17 @@ public class Quiz {
     private Integer id;
     private String title;
 
+    public List<Integer> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Integer> questions) {
+        this.questions = questions;
+    }
+
+    @ElementCollection
+    private List<Integer> questions;
+
     public Integer getId() {
         return id;
     }
@@ -30,13 +41,6 @@ public class Quiz {
         this.id = id;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
-    }
 
     public String getTitle() {
         return title;
@@ -46,6 +50,5 @@ public class Quiz {
         this.title = title;
     }
 
-    @ManyToMany
-    private List<Question> questions;
+
 }
