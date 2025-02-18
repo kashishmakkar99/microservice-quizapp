@@ -6,7 +6,9 @@ import com.bigmakk.question_service.model.Question;
 import com.bigmakk.question_service.model.QuestionWrapper;
 import com.bigmakk.question_service.model.Response;
 import com.bigmakk.question_service.service.QuestionService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,11 @@ public class QuestionController {
 
     @Autowired
     QuestionService questionService;
+
+
+    @Autowired
+    Environment environment;
+
     @GetMapping("allQuestions")
     public ResponseEntity<List<Question>> getAllQuestions(){
 
@@ -44,6 +51,7 @@ public class QuestionController {
 
     @PostMapping("getQuestions")
     public ResponseEntity<List<QuestionWrapper>> getQuestionsFromId(@RequestBody List<Integer> questionIds){
+        System.out.println(environment.getProperty("local.server.port"));
         return questionService.getQuestionsFromID(questionIds);
     }
 
